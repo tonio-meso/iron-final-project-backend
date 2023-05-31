@@ -15,6 +15,7 @@ const app = express();
 require("./config")(app);
 
 // 👇 Start handling routes here
+// we use "api" as convention
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 

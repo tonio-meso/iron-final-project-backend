@@ -6,3 +6,7 @@ router.get("/", (req, res, next) => {
 });
 
 module.exports = router;
+
+// here is the schema for all the road i'm gonna use
+
+router.use("/allmovies", require("./../routes/allmovies"));
