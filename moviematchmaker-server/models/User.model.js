@@ -14,9 +14,9 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required."],
     },
-    name: {
+    pseudo: {
       type: String,
-      required: [true, "Name is required."],
+      required: [true, "Pseudo is required."],
     },
   },
   {
