@@ -32,8 +32,7 @@ module.exports = (app) => {
   app.use((req, res, next) => {
     res.setHeader(
       "Access-Control-Allow-Origin",
-      "https://moviematchmaker-client.netlify.app",
-      "http://localhost:3000"
+      "http://localhost:5173, https://moviematchmaker-client.netlify.app"
     );
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
