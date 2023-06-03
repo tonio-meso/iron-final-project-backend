@@ -1,7 +1,6 @@
 // ℹ️ Gets access to environment variables/settings
 // https://www.npmjs.com/package/dotenv
-// require("dotenv").config();
-require("dotenv/config");
+require("dotenv").config();
 
 // ℹ️ Connects to the database
 require("./db");
@@ -34,12 +33,5 @@ app.use("/auth", authRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
-
-// // Enable CORS for requests from http://localhost:5173
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173",
-//   })
-// );
 
 module.exports = app;

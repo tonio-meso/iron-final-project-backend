@@ -23,11 +23,22 @@ module.exports = (app) => {
   app.set("trust proxy", 1);
 
   // controls a very specific header to pass headers from the frontend
-  app.use(
-    cors({
-      origin: [FRONTEND_URL],
-    })
-  );
+  // app.use(
+  //   cors({
+  //     origin: [FRONTEND_URL],
+  //   })
+  // );
+
+  app.use((req, res, next) => {
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      "https://moviematchmaker-client.netlify.app",
+      "http://localhost:3000"
+    );
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    next();
+  });
 
   // In development environment the app logs
   app.use(logger("dev"));
