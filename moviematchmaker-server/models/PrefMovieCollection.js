@@ -1,10 +1,18 @@
 const { model, Schema } = require("mongoose");
 
 const PrefMovieCollectionSchema = new Schema({
-    creator: {
-        type: Schema.Types.ObjectId,
-        ref: "Student",
-        required: true,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  preferred_genres: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "GenreMovie",
+    },
+  ],
+  year_preferences: String,
 });
 
 const PrefMovieCollection = model(
@@ -12,4 +20,4 @@ const PrefMovieCollection = model(
   PrefMovieCollectionSchema
 );
 
-module.exports = Movie;
+module.exports = PrefMovieCollection;

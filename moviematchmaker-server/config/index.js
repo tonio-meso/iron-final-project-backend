@@ -29,6 +29,7 @@ module.exports = (app) => {
   //   })
   // );
 
+  // fix to allow our server to receive request from the client localhost and on netlify
   app.use((req, res, next) => {
     const allowedOrigins = [
       "http://localhost:5173",
