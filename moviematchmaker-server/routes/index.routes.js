@@ -8,7 +8,7 @@ router.get("/", (req, res, next) => {
 
 // here is the schema for all the road i'm gonna use
 
-router.use(isAuthenticated);
+// router.use(isAuthenticated);
 router.use("/allgenres", require("./../routes/genremovies"));
 router.use("/allmovies", require("./../routes/allmovies"));
 router.use("/auth", require("./auth.routes.js"));
