@@ -5,13 +5,9 @@ const PrefMovieCollectionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
+    unique: true, // prevent a same user to post several time
   },
-  preferred_genres: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "GenreMovie",
-    },
-  ],
+  preferred_genres: [{ type: Number }],
   year_preferences: String,
 });
 

@@ -9,10 +9,10 @@ router.get("/", (req, res, next) => {
 // here is the schema for all the road i'm gonna use
 
 // router.use("/user", require("./../routes/user.route"));
-router.use(
-  "/preference_collection",
-  require("./../routes/preference_collection")
-);
+// router.use(
+//   "/preference_collection",
+//   require("./../routes/preference_collection")
+// );
 
 router.use("/allgenres", require("./../routes/genremovies"));
 router.use("/allmovies", require("./../routes/allmovies"));
