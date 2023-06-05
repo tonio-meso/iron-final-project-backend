@@ -9,6 +9,10 @@ const PrefMovieCollectionSchema = new Schema({
   },
   preferred_genres: [{ type: Number }],
   year_preferences: String,
+  isFormSubmitted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const PrefMovieCollection = model(

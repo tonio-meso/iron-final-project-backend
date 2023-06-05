@@ -40,6 +40,7 @@ router.post("/", async (req, res, next) => {
       user: req.body.user,
       preferred_genres: req.body.preferred_genres,
       year_preferences: req.body.year_preferences,
+      isFormSubmitted: true, // Set isFormSubmitted to true for the new document
     });
 
     // Save the new document to the database
@@ -51,5 +52,28 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
+// GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
+router.get("/", async (req, res, next) => {
+  try {
+    const userId = req.user._id; // populate with req.user with the logged-in user information
+    // Find the user's PrefMovieCollection to get the isFormSubmitted value
+    const prefMovieCollection = await PrefMovieCollection.findOne({
+      user: userId,
+    });
+
+    if (prefMovieCollection) {
+      // User has submitted the form
+      res.json({ isFormSubmitted: true });
+    } else {
+      // User has not submitted the form
+      res.json({ isFormSubmitted: false });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+module.exports = router;
 
 module.exports = router;
