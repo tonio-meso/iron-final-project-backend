@@ -13,7 +13,10 @@ router.use(
   "/preference_collection",
   require("./../routes/preference_collection")
 );
+
+router.use("/allgenres", require("./../routes/genremovies"));
 router.use("/allmovies", require("./../routes/allmovies"));
+router.use("/form", require("./../routes/prefform"));
 
 router.use("/auth", require("./auth.routes.js"));
 

@@ -11,8 +11,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-module.exports = router;
-
 router.get("/movie-picture", async (req, res, next) => {
   try {
     const movies = await Movie.find().limit(10);
@@ -26,3 +24,5 @@ router.get("/movie-picture", async (req, res, next) => {
     next(error);
   }
 });
+
+module.exports = router;
