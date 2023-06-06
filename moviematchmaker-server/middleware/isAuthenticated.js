@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("./jwt.middleware.js");
+// const User = require("./jwt.middleware.js");
 
 async function isAuthenticated(req, res, next) {
   try {
@@ -8,7 +8,7 @@ async function isAuthenticated(req, res, next) {
     if (!token) {
       return res.status(400).json({ message: "no token found" });
     }
-    token = token.replace("Bearer", "");
+    token = token.replace("Bearer ", "");
     console.log(token);
     const payload = jwt.verify(token, process.env.TOKEN_SECRET, {
       algorithms: "HS256",
