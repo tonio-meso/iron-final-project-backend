@@ -15,7 +15,7 @@ async function isAuthenticated(req, res, next) {
     });
     const user = await User.findById(payload._id);
     req.user = user;
-    // the chek is ok go to the newt part
+    // the chek is ok go to the next part
     next();
   } catch (error) {
     next(error);
