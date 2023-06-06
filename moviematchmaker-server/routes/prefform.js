@@ -56,7 +56,8 @@ router.post("/", async (req, res, next) => {
 // GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
 router.get("/", async (req, res, next) => {
   try {
-    const userId = req.user._id; // populate with req.user with the logged-in user information
+    console.log(req.payload._id); // for debug
+    const userId = req.payload._id;
     // Find the user's PrefMovieCollection to get the isFormSubmitted value
     const prefMovieCollection = await PrefMovieCollection.findOne({
       user: userId,
