@@ -46,6 +46,11 @@ module.exports = (app) => {
       "Access-Control-Allow-Headers",
       "Content-Type, Authorization"
     ); // Include 'Authorization' header
+
+    // If it's a preflight OPTIONS request, respond with a 200 status
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(200);
+    }
     next();
   });
 
