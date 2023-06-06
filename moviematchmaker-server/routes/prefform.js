@@ -56,28 +56,20 @@ router.post("/", async (req, res, next) => {
 // GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
 router.get("/", async (req, res, next) => {
   try {
-    if (!req.payload) {
-      // Handle case when payload is not present on request
-      const error = new Error("Missing request payload");
-      error.status = 400;
-      throw error;
+    if (!userId) {
+      const err = new Error("No user ID provided");
+      err.status = 400;
+      return next(err);
     }
-
-    if (!req.payload._id) {
-      // Handle case when _id is not present on the payload
-      const error = new Error("Missing _id in request payload");
-      error.status = 400;
-      throw error;
-    }
-
-    console.log(req.payload._id); // for debug
-    const userId = req.payload._id;
-
-    // Find the user's PrefMovieCollection to get the isFormSubmitted value
     const prefMovieCollection = await PrefMovieCollection.findOne({
       user: userId,
     });
 
+    if (!prefMovieCollection && prefMovieCollection !== null) {
+      const err = new Error("Invalid user ID provided");
+      err.status = 400;
+      return next(err);
+    }
     if (prefMovieCollection) {
       // User has submitted the form
       res.json({ isFormSubmitted: true });
