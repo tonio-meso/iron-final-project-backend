@@ -54,7 +54,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
-router.get("/", async (req, res, next) => {
+router.get("/:userId", async (req, res, next) => {
   try {
     if (!userId) {
       const err = new Error("No user ID provided");
