@@ -54,13 +54,17 @@ router.post("/", async (req, res, next) => {
 });
 
 // GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
-router.get("/:userId", async (req, res, next) => {
+// GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
+router.get("/:id", async (req, res, next) => {
   try {
+    const userId = req.params.id; // Extract userId from request parameters
+
     if (!userId) {
       const err = new Error("No user ID provided");
       err.status = 400;
       return next(err);
     }
+
     const prefMovieCollection = await PrefMovieCollection.findOne({
       user: userId,
     });
@@ -70,6 +74,7 @@ router.get("/:userId", async (req, res, next) => {
       err.status = 400;
       return next(err);
     }
+
     if (prefMovieCollection) {
       // User has submitted the form
       res.json({ isFormSubmitted: true });
