@@ -54,7 +54,8 @@ router.get("/filtered-movies", async (req, res, next) => {
     console.log("Preferred genres:", preferredGenres);
 
     // Fetch the user's swiped movies
-    const swipedMovieIds = await UserSwipe.getSwipedMovies(userId);
+    // const swipedMovieIds = await UserSwipe.getSwipedMovies(userId);
+    const swipedMovieIds = await UserSwipe.getSwipedMovies(userIdAsObjectId);
 
     const movies = await Movie.find({
       genre_ids: { $in: preferredGenres },

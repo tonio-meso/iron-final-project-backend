@@ -19,8 +19,22 @@ const userSwipeSchema = new Schema(
 );
 
 UserSwipeSchema.statics.getSwipedMovies = async function (userId) {
-  const swipes = await this.find({ userId }).select("movieId");
-  return swipes.map((swipe) => swipe.movieId);
+  const swipe = await this.findOne({ userId });
+
+  if (!swipe) {
+    // If there are no records for the user yet, return an empty array
+    return [];
+  }
+
+  // Collect all movie ids from the likes, dislikes, superlikes, unwatched fields
+  const swipedMovieIds = [
+    ...swipe.likes,
+    ...swipe.dislikes,
+    ...swipe.superlikes,
+    ...swipe.unwatched,
+  ];
+
+  return swipedMovieIds;
 };
 
 const UserSwipe = model("UserSwipe", userSwipeSchema);
