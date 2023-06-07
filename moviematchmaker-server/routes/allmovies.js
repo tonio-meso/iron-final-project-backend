@@ -1,9 +1,7 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
 const Movie = require("./../models/MovieModel");
-const PrefMovieCollection = require("./../models/GenreMovieModel");
-const bson = require("bson");
-const isAuthenticated = require("./../middleware/isAuthenticated");
+const PrefMovieCollection = require("./../models/PrefMovieCollection");
 
 // get the list of 10 first movies from the db
 router.get("/", async (req, res, next) => {
@@ -17,7 +15,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/movie-picture", async (req, res, next) => {
   try {
-    const movies = await Movie.find().limit(20);
+    const movies = await Movie.find();
     const formattedMovies = movies.map((movie) => ({
       _id: movie._id,
       title: movie.title,
@@ -42,7 +40,7 @@ router.get("/filtered-movies", async (req, res, next) => {
 
     // Query with the userId as ObjectId
     const userPref = await PrefMovieCollection.findOne({
-      user: userIdAsObjectId,
+      user: userId,
     });
 
     // If userPref is null, it means that no document was found with the provided userId
@@ -81,57 +79,5 @@ router.get("/filtered-movies", async (req, res, next) => {
     next(error);
   }
 });
-
-//...
-// router.get("/filtered-movies/", async (req, res, next) => {
-//   try {
-//     const userIdAsObjectId = req.user._id; // we are now getting the userId from req.user (added by the isAuthenticated middleware)
-
-//     console.log("Incoming userId as ObjectId:", userIdAsObjectId);
-
-//     console.log(
-//       "Querying PrefMovieCollection with user ObjectId:",
-//       userIdAsObjectId
-//     );
-//     const userPref = await PrefMovieCollection.findOne({
-//       user: userIdAsObjectId,
-//     });
-//     console.log("Result of query:", userPref);
-
-//     if (!userPref) {
-//       console.log(
-//         `No PrefMovieCollection document found for userId ${userIdAsObjectId}`
-//       );
-//       res.status(404).json({ message: "User preferences not found" });
-//       return;
-//     }
-
-//     console.log("Found user preferences:", userPref);
-
-//     const preferredGenres = userPref.preferred_genres;
-//     console.log("Preferred genres:", preferredGenres);
-
-//     const movies = await Movie.find({
-//       genre_ids: { $in: preferredGenres },
-//     }).limit(20);
-
-//     console.log("Found movies:", movies);
-
-//     const formattedMovies = movies.map((movie) => ({
-//       _id: movie._id,
-//       title: movie.title,
-//       poster_path: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
-//     }));
-
-//     console.log("Formatted movies:", formattedMovies);
-
-//     res.json(formattedMovies);
-//   } catch (error) {
-//     console.error("Error occurred:", error);
-//     next(error);
-//   }
-// });
-
-// //...
 
 module.exports = router;
