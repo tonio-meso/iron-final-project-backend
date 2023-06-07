@@ -3,7 +3,7 @@ const router = require("express").Router();
 // const Movie = require("./../models/MovieModel");
 const UserSwipe = require("./../models/SwipeModel");
 
-router.post("/swipe", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { userId, movieId, swipe } = req.body;
     const userSwipe =
