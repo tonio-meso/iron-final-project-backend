@@ -1,12 +1,12 @@
 const router = require("express").Router();
 const PrefMovieCollection = require("../models/PrefMovieCollection");
-const UserSwipe = require("./../models/SwipeModel");
-const Movie = require("./../models/MovieModel");
+const UserSwipe = require("../models/SwipeModel");
+const Movie = require("../models/MovieModel");
 
 router.get("/", async (req, res, next) => {
+  console.log("req.user:", req.user);
+  const userId = req.user._id;
   try {
-    const userId = req.user._id;
-    console.log("Incoming userId:", userId);
     // Fetch user preferences
     const userPref = await PrefMovieCollection.findOne({ user: userId });
 
@@ -15,12 +15,12 @@ router.get("/", async (req, res, next) => {
     }
 
     // Fetch movies based on preferred genres
-    const genreMovies = await Movie.find({
+    let genreMovies = await Movie.find({
       genre_ids: { $in: userPref.preferred_genres },
     });
 
     // Fetch user swipes
-    const userSwipes = await UserSwipe.findOne({ userId });
+    let userSwipes = await UserSwipe.findOne({ userId });
 
     // If userSwipes is null, initialize it as an empty object
     userSwipes = userSwipes || {
@@ -44,7 +44,7 @@ router.get("/", async (req, res, next) => {
     );
 
     // Fetch super liked movies ids by other users
-    const superLikedMoviesIds = await UserSwipe.find({
+    let superLikedMoviesIds = await UserSwipe.find({
       userId: { $ne: userId },
     }).distinct("superlikes");
 
@@ -54,15 +54,18 @@ router.get("/", async (req, res, next) => {
     );
 
     let recommendedMovies;
+    let message;
     if (superLikedMovies.length >= 10) {
       // Choose 10 random movies from superLikedMovies
       recommendedMovies = chooseRandom(superLikedMovies, 10);
+      message = "Here are 10 movies based on user preference";
     } else {
       // Choose 10 random movies from genreMovies
       recommendedMovies = chooseRandom(genreMovies, 10);
+      message = "Here are 10 random movies";
     }
 
-    res.json(recommendedMovies);
+    res.json({ message, recommendedMovies });
   } catch (error) {
     console.error("Error occurred:", error);
     next(error);
