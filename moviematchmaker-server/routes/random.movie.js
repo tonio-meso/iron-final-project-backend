@@ -1,10 +1,7 @@
-const express = require("express");
-const router = express.Router();
-const mongoose = require("mongoose");
-
+const router = require("express").Router();
 const PrefMovieCollection = require("../models/PrefMovieCollection");
-const UserSwipe = require("../models/UserSwipe");
-const Movie = require("../models/Movie");
+const UserSwipe = require("./../models/SwipeModel");
+const Movie = require("./../models/MovieModel");
 
 router.get("/", async (req, res, next) => {
   try {
