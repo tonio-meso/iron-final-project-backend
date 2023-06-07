@@ -11,6 +11,7 @@ router.get("/", (req, res, next) => {
 router.use(isAuthenticated);
 router.use("/allgenres", require("./../routes/genremovies"));
 router.use("/allmovies", require("./../routes/allmovies"));
+router.use("/swipe", require("./swiperoute"));
 router.use("/auth", require("./auth.routes.js"));
 router.use("/form", require("./../routes/prefform"));
 

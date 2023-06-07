@@ -54,35 +54,57 @@ router.post("/", async (req, res, next) => {
 });
 
 // GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
-// GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
-router.get("/:id", async (req, res, next) => {
+router.get("/filtered-movies/:userId", async (req, res, next) => {
   try {
-    const userId = req.params.id; // Extract userId from request parameters
+    const userId = req.params.userId;
+    console.log("Incoming userId:", userId);
 
-    if (!userId) {
-      const err = new Error("No user ID provided");
-      err.status = 400;
-      return next(err);
+    // Cast userId to an ObjectId
+    const userIdAsObjectId = new mongoose.Types.ObjectId(userId);
+
+    // Check if the ObjectId is valid
+    const isValid = mongoose.Types.ObjectId.isValid(userIdAsObjectId);
+    console.log("Is ObjectId valid:", isValid);
+
+    if (!isValid) {
+      res.status(400).json({ message: "Invalid user ID" });
+      return;
     }
 
-    const prefMovieCollection = await PrefMovieCollection.findOne({
-      user: userId,
+    console.log("userId as ObjectId:", userIdAsObjectId);
+
+    const userPref = await PrefMovieCollection.findOne({
+      user: userIdAsObjectId,
     });
 
-    if (!prefMovieCollection && prefMovieCollection !== null) {
-      const err = new Error("Invalid user ID provided");
-      err.status = 400;
-      return next(err);
+    if (!userPref) {
+      console.log(`No PrefMovieCollection document found for userId ${userId}`);
+      res.status(404).json({ message: "User preferences not found" });
+      return;
     }
 
-    if (prefMovieCollection) {
-      // User has submitted the form
-      res.json({ isFormSubmitted: true });
-    } else {
-      // User has not submitted the form
-      res.json({ isFormSubmitted: false });
-    }
+    console.log("Found user preferences:", userPref);
+
+    const preferredGenres = userPref.preferred_genres;
+    console.log("Preferred genres:", preferredGenres);
+
+    const movies = await Movie.find({
+      genre_ids: { $in: preferredGenres },
+    }).limit(20);
+
+    console.log("Found movies:", movies);
+
+    const formattedMovies = movies.map((movie) => ({
+      _id: movie._id,
+      title: movie.title,
+      poster_path: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
+    }));
+
+    console.log("Formatted movies:", formattedMovies);
+
+    res.json(formattedMovies);
   } catch (error) {
+    console.error("Error occurred:", error);
     next(error);
   }
 });
