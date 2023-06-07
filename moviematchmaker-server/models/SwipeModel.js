@@ -18,7 +18,7 @@ const userSwipeSchema = new Schema(
   }
 );
 
-UserSwipeSchema.statics.getSwipedMovies = async function (userId) {
+userSwipeSchema.statics.getSwipedMovies = async function (userId) {
   const swipe = await this.findOne({ userId });
 
   if (!swipe) {
