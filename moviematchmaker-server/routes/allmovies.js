@@ -2,7 +2,7 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 const Movie = require("./../models/MovieModel");
 const PrefMovieCollection = require("./../models/PrefMovieCollection");
-const UserSwipe = require("./../models/MovieModel");
+const UserSwipe = require("./../models/SwipeModel");
 
 // get the list of 10 first movies from the db
 router.get("/", async (req, res, next) => {
