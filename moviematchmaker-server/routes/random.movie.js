@@ -6,10 +6,10 @@ const PrefMovieCollection = require("../models/PrefMovieCollection");
 const UserSwipe = require("../models/UserSwipe");
 const Movie = require("../models/Movie");
 
-router.get("/:userId", async (req, res, next) => {
-  const userId = mongoose.Types.ObjectId(req.params.userId);
-
+router.get("/", async (req, res, next) => {
   try {
+    const userId = req.user._id;
+    console.log("Incoming userId:", userId);
     // Fetch user preferences
     const userPref = await PrefMovieCollection.findOne({ user: userId });
 
