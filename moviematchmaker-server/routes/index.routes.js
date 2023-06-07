@@ -14,6 +14,7 @@ router.use("/allmovies", require("./../routes/allmovies"));
 router.use("/swipe", require("./swiperoute"));
 router.use("/auth", require("./auth.routes.js"));
 router.use("/form", require("./../routes/prefform"));
+router.use("random-movies", require("./../routes/random.movie"));
 
 //need to be log here for this part
 
