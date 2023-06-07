@@ -31,7 +31,6 @@ router.get("/filtered-movies", async (req, res, next) => {
   try {
     const userId = req.user._id;
     console.log("Incoming userId:", userId);
-    console.log("Type of userId:", typeof userId);
 
     // Cast userId to an ObjectId
     const userIdAsObjectId = new mongoose.Types.ObjectId(userId);
@@ -51,18 +50,17 @@ router.get("/filtered-movies", async (req, res, next) => {
     }
 
     console.log("Found user preferences:", userPref);
-    console.log("Type of userPref:", typeof userPref);
-
     const preferredGenres = userPref.preferred_genres;
     console.log("Preferred genres:", preferredGenres);
-    console.log("Type of preferredGenres:", typeof preferredGenres);
+
+    // Fetch the user's swiped movies
+    const swipedMovieIds = await UserSwipe.getSwipedMovies(userId);
 
     const movies = await Movie.find({
       genre_ids: { $in: preferredGenres },
+      _id: { $nin: swipedMovieIds },
     }).limit(20);
-
     console.log("Found movies:", movies);
-    console.log("Type of movies:", typeof movies);
 
     const formattedMovies = movies.map((movie) => ({
       _id: movie._id,
@@ -71,7 +69,6 @@ router.get("/filtered-movies", async (req, res, next) => {
     }));
 
     console.log("Formatted movies:", formattedMovies);
-    console.log("Type of formattedMovies:", typeof formattedMovies);
 
     res.json(formattedMovies);
   } catch (error) {
