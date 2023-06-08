@@ -31,11 +31,6 @@ router.post("/", async (req, res, next) => {
       throw new Error("Preferred genres should be an array");
     }
 
-    // // Transform the array of string ids into an array of ObjectIds
-    // const preferred_genres = req.body.preferred_genres.map((genre) =>
-    //   mongoose.Types.ObjectId(genre)
-    // );
-
     // Create a new PrefMovieCollection document with the data from the request body
     const newPrefMovieCollection = new PrefMovieCollection({
       user: req.body.user,
@@ -69,60 +64,61 @@ router.get("/", async (req, res) => {
   }
 });
 
-//  !!!!! GET am i still using this route?
-router.get("/filtered-movies/:userId", async (req, res, next) => {
-  try {
-    const userId = req.params.userId;
-    console.log("Incoming userId:", userId);
+//  not using this route anymore
 
-    // Cast userId to an ObjectId
-    const userIdAsObjectId = new mongoose.Types.ObjectId(userId);
+// router.get("/filtered-movies/:userId", async (req, res, next) => {
+//   try {
+//     const userId = req.params.userId;
+//     console.log("Incoming userId:", userId);
 
-    // Check if the ObjectId is valid
-    const isValid = mongoose.Types.ObjectId.isValid(userIdAsObjectId);
-    console.log("Is ObjectId valid:", isValid);
+//     // Cast userId to an ObjectId
+//     const userIdAsObjectId = new mongoose.Types.ObjectId(userId);
 
-    if (!isValid) {
-      res.status(400).json({ message: "Invalid user ID" });
-      return;
-    }
+//     // Check if the ObjectId is valid
+//     const isValid = mongoose.Types.ObjectId.isValid(userIdAsObjectId);
+//     console.log("Is ObjectId valid:", isValid);
 
-    console.log("userId as ObjectId:", userIdAsObjectId);
+//     if (!isValid) {
+//       res.status(400).json({ message: "Invalid user ID" });
+//       return;
+//     }
 
-    const userPref = await PrefMovieCollection.findOne({
-      user: userIdAsObjectId,
-    });
+//     console.log("userId as ObjectId:", userIdAsObjectId);
 
-    if (!userPref) {
-      console.log(`No PrefMovieCollection document found for userId ${userId}`);
-      res.status(404).json({ message: "User preferences not found" });
-      return;
-    }
+//     const userPref = await PrefMovieCollection.findOne({
+//       user: userIdAsObjectId,
+//     });
 
-    console.log("Found user preferences:", userPref);
+//     if (!userPref) {
+//       console.log(`No PrefMovieCollection document found for userId ${userId}`);
+//       res.status(404).json({ message: "User preferences not found" });
+//       return;
+//     }
 
-    const preferredGenres = userPref.preferred_genres;
-    console.log("Preferred genres:", preferredGenres);
+//     console.log("Found user preferences:", userPref);
 
-    const movies = await Movie.find({
-      genre_ids: { $in: preferredGenres },
-    }).limit(20);
+//     const preferredGenres = userPref.preferred_genres;
+//     console.log("Preferred genres:", preferredGenres);
 
-    console.log("Found movies:", movies);
+//     const movies = await Movie.find({
+//       genre_ids: { $in: preferredGenres },
+//     }).limit(20);
 
-    const formattedMovies = movies.map((movie) => ({
-      _id: movie._id,
-      title: movie.title,
-      poster_path: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
-    }));
+//     console.log("Found movies:", movies);
 
-    console.log("Formatted movies:", formattedMovies);
+//     const formattedMovies = movies.map((movie) => ({
+//       _id: movie._id,
+//       title: movie.title,
+//       poster_path: `https://image.tmdb.org/t/p/original${movie.poster_path}`,
+//     }));
 
-    res.json(formattedMovies);
-  } catch (error) {
-    console.error("Error occurred:", error);
-    next(error);
-  }
-});
+//     console.log("Formatted movies:", formattedMovies);
+
+//     res.json(formattedMovies);
+//   } catch (error) {
+//     console.error("Error occurred:", error);
+//     next(error);
+//   }
+// });
 
 module.exports = router;

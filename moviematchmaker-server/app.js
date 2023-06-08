@@ -11,20 +11,9 @@ const express = require("express");
 // const cors = require("cors");
 const app = express();
 
-// app.use(cors());
-
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 
-// // Enable CORS for requests from http://localhost:5173
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173",
-//   })
-// );
-
-// 👇 Start handling routes here
-// we use "api" as convention
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 

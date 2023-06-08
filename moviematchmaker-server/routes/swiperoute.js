@@ -3,6 +3,7 @@ const router = require("express").Router();
 // const Movie = require("./../models/MovieModel");
 const UserSwipe = require("./../models/SwipeModel");
 
+// here the post request from the client a user gonna post for each movies like superlike or dislike or unwatched
 router.post("/", async (req, res, next) => {
   try {
     const { movieId, swipe } = req.body;

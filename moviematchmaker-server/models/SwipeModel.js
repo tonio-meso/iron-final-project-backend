@@ -17,8 +17,9 @@ const userSwipeSchema = new Schema(
     timestamps: true,
   }
 );
-
+// this Static methods is functions directly available on the model itself rather than on in instance
 userSwipeSchema.statics.getSwipedMovies = async function (userId) {
+  //  find a document in the UserSwipe collection that matches the given userId
   const swipe = await this.findOne({ userId });
 
   if (!swipe) {

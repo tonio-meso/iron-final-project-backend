@@ -14,6 +14,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// get all the movies not used by the client
 router.get("/movie-picture", async (req, res, next) => {
   try {
     const movies = await Movie.find();
@@ -28,6 +29,7 @@ router.get("/movie-picture", async (req, res, next) => {
   }
 });
 
+// get the filtered movie used by the client just after he fill the form to get random movies
 router.get("/filtered-movies", async (req, res, next) => {
   try {
     const userId = req.user._id;
@@ -58,6 +60,7 @@ router.get("/filtered-movies", async (req, res, next) => {
     // const swipedMovieIds = await UserSwipe.getSwipedMovies(userId);
     const swipedMovieIds = await UserSwipe.getSwipedMovies(userIdAsObjectId);
 
+    // $nin operator to exclude movies that have IDs present in the swipedMovieIds array from mongo
     const movies = await Movie.find({
       genre_ids: { $in: preferredGenres },
       _id: { $nin: swipedMovieIds },

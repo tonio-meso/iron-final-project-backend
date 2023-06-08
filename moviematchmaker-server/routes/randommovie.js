@@ -3,6 +3,7 @@ const PrefMovieCollection = require("../models/PrefMovieCollection");
 const UserSwipe = require("../models/SwipeModel");
 const Movie = require("../models/MovieModel");
 
+// route here to get random movies based on pref from the user
 router.get("/", async (req, res, next) => {
   console.log("req.user:", req.user);
   const userId = req.user._id;
@@ -44,6 +45,7 @@ router.get("/", async (req, res, next) => {
     );
 
     // Fetch super liked movies ids by other users
+    // condition into mongoooo to find documents where the userId field is not equal to the given userId
     let superLikedMoviesIds = await UserSwipe.find({
       userId: { $ne: userId },
     }).distinct("superlikes");
