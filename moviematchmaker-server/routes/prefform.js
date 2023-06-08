@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const PrefMovieCollection = require("./../models/PrefMovieCollection");
 
+// post request used by a user when is submit a form
 router.post("/", async (req, res, next) => {
   try {
     console.log("req.body", req.body);
@@ -53,7 +54,22 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// GET /api/isFormSubmitted - Retrieve the isFormSubmitted value for a user
+// GET request to know the state of isFormSubmitted for a user
+router.get("/", async (req, res) => {
+  try {
+    const form = await PrefMovieCollection.findOne({ user: req.user._id }); // Assuming you have implemented user authentication and have access to req.user._id
+    if (form) {
+      res.status(200).json({ isFormSubmitted: form.isFormSubmitted });
+    } else {
+      res.status(404).json({ message: "Form data not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching form:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+//  !!!!! GET am i still using this route?
 router.get("/filtered-movies/:userId", async (req, res, next) => {
   try {
     const userId = req.params.userId;
